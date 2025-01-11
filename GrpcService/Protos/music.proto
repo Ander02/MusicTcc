@@ -1,0 +1,203 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc";
+
+import "google/protobuf/timestamp.proto";
+
+// Album
+service AlbumService {
+  rpc CreateAlbum (CreateAlbumRequest) returns (AlbumResponse);
+  rpc UpdateAlbum (UpdateAlbumRequest) returns (AlbumResponse);
+  rpc DeleteAlbum (DeleteAlbumRequest) returns (EmptyResponse);
+  rpc GetAlbumById (GetAlbumByIdRequest) returns (AlbumResponse);
+}
+
+message CreateAlbumRequest {
+  string name = 1;
+  string base64Image = 2;
+  google.protobuf.Timestamp releasedAt = 3;
+}
+
+message UpdateAlbumRequest {
+  string name = 1;
+  string base64Image = 2;
+  google.protobuf.Timestamp releasedAt = 3;
+}
+
+message DeleteAlbumRequest {
+  string id = 1;
+}
+
+message GetAlbumByIdRequest {
+  string id = 1;
+}
+
+message AlbumResponse {
+  string id = 1;
+  string name = 2;
+  string base64Image = 3;
+  google.protobuf.Timestamp releasedAt = 4;
+  repeated ArtistResponse artists = 5;
+  repeated MusicResponse musics = 6;
+}
+
+// Artist
+service ArtistService {
+  rpc CreateArtist (CreateArtistRequest) returns (ArtistResponse);
+  rpc UpdateArtist (UpdateArtistRequest) returns (ArtistResponse);
+  rpc DeleteArtist (DeleteArtistRequest) returns (EmptyResponse);
+  rpc GetArtistById (GetArtistByIdRequest) returns (ArtistResponse);
+}
+
+message CreateArtistRequest {
+  string name = 1;
+  string birthday = 2;  // Format: YYYY-MM-DD
+}
+
+message UpdateArtistRequest {
+  string name = 1;
+  string birthday = 2;
+}
+
+message DeleteArtistRequest {
+  string id = 1;
+}
+
+message GetArtistByIdRequest {
+  string id = 1;
+}
+
+message ArtistResponse {
+  string id = 1;
+  string name = 2;
+  string birthday = 3;
+  repeated AlbumResponse albums = 4;
+}
+
+// Genre
+service GenreService {
+  rpc CreateGenre (CreateGenreRequest) returns (GenreResponse);
+  rpc UpdateGenre (UpdateGenreRequest) returns (GenreResponse);
+  rpc DeleteGenre (DeleteGenreRequest) returns (EmptyResponse);
+  rpc GetGenreById (GetGenreByIdRequest) returns (GenreResponse);
+}
+
+message CreateGenreRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message UpdateGenreRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message DeleteGenreRequest {
+  string id = 1;
+}
+
+message GetGenreByIdRequest {
+  string id = 1;
+}
+
+message GenreResponse {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  repeated MusicResponse musics = 4;
+}
+
+// Music
+service MusicService {
+  rpc CreateMusic (CreateMusicRequest) returns (MusicResponse);
+  rpc UpdateMusic (UpdateMusicRequest) returns (MusicResponse);
+  rpc DeleteMusic (DeleteMusicRequest) returns (EmptyResponse);
+  rpc GetMusicById (GetMusicByIdRequest) returns (MusicResponse);
+}
+
+message CreateMusicRequest {
+  string title = 1;
+  repeated string albumIds = 2;
+  repeated string genreIds = 3;
+}
+
+message UpdateMusicRequest {
+  string title = 1;
+  repeated string albumIds = 2;
+  repeated string genreIds = 3;
+}
+
+message DeleteMusicRequest {
+  string id = 1;
+}
+
+message GetMusicByIdRequest {
+  string id = 1;
+}
+
+message MusicResponse {
+  string id = 1;
+  string title = 2;
+  repeated AlbumResponse albums = 3;
+  repeated GenreResponse genres = 4;
+  repeated RatingResponse ratings = 5;
+}
+
+// Rating
+service RatingService {
+  rpc CreateRating (CreateRatingRequest) returns (RatingResponse);
+  rpc UpdateRating (UpdateRatingRequest) returns (RatingResponse);
+  rpc DeleteRating (DeleteRatingRequest) returns (EmptyResponse);
+}
+
+message CreateRatingRequest {
+  string musicId = 1;
+  string userId = 2;
+  int32 rate = 3;
+}
+
+message UpdateRatingRequest {
+  string musicId = 1;
+  string userId = 2;
+  int32 rate = 3;
+}
+
+message DeleteRatingRequest {
+  string id = 1;
+}
+
+message RatingResponse {
+  string id = 1;
+  string musicId = 2;
+  string userId = 3;
+  int32 rate = 4;
+}
+
+// User
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (EmptyResponse);
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+}
+
+message UpdateUserRequest {
+  string name = 1;
+  string email = 2;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message EmptyResponse {}
