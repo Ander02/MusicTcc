@@ -1,11 +1,24 @@
+using Business;
+using Data;
 using GrpcService.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssemblyContaining<BusinessAssemblyType>();
+});
+
+// Adicionar o DbContext
+builder.Services.AddDbContext<MusicDbContext>(options =>
+    options.UseInMemoryDatabase("Database"));
+
 
 var app = builder.Build();
 

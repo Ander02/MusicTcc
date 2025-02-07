@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace RestApi.Controllers
 {
     [Route("api/[controller]")]
-    public class AlbumController : ControllerBase
+    public class AlbumsController : ControllerBase
     {
         private readonly IMediator mediator;
 
-        public AlbumController(IMediator mediator)
+        public AlbumsController(IMediator mediator)
         {
             this.mediator = mediator;
         }

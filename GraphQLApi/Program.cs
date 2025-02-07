@@ -1,4 +1,7 @@
+using Business;
+using Data;
 using GraphQLApi.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,10 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSwaggerGen();
 
+// Adicionar o DbContext
+builder.Services.AddDbContext<MusicDbContext>(options =>
+    options.UseInMemoryDatabase("Database"));
+
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssemblyContaining<BusinessAssemblyType>();
+});
+
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddMutationType<Mutation>()
+    .AddMutationType<Mutation>(config =>
+    {
+    })
     .AddProjections()
     .AddFiltering()
     .AddSorting();
@@ -25,8 +39,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.MapControllers();
+app.MapGraphQL();
 
 app.Run();

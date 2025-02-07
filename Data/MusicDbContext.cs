@@ -41,9 +41,8 @@ namespace Data
 
                 if (typeof(IEntity).IsAssignableFrom(entityClrType))
                 {
-                    var createdAtAndUpdatedAtProperty = typeof(MusicDbContext).GetMethods(BindingFlags.Static | BindingFlags.Instance)
-                                                         .Single(t => t.IsGenericMethod
-                                                                   && t.Name == nameof(SetCreatedAtAndUpdatedAtPropertyOnAdd));
+                    var createdAtAndUpdatedAtProperty = typeof(MusicDbContext).GetMethods()
+                                                         .Single(t => t.Name == nameof(SetCreatedAtAndUpdatedAtPropertyOnAdd));
 
                     var method = createdAtAndUpdatedAtProperty.MakeGenericMethod(entityClrType);
 

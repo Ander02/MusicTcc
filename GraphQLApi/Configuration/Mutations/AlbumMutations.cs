@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GraphQLApi.Configuration.Mutations
 {
-    public class CreateAlbumMutation
+    public class AlbumMutations
     {
         public Task<Album> CreateAlbumAsync(Create.Command command, [Service] IMediator mediator)
         {          
